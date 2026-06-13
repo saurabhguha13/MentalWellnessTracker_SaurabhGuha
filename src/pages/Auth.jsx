@@ -55,7 +55,7 @@ const Auth = () => {
       <div className="auth-container glass">
         <div className="auth-header">
           <Brain className="auth-logo" size={48} color="var(--primary)" />
-          <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
+          <h2>{isLogin ? 'Welcome back to Samridhi' : 'Join Samridhi'}</h2>
           <p>{isLogin ? 'Log in to continue your wellness journey.' : 'Start tracking your mental wellness today.'}</p>
         </div>
 

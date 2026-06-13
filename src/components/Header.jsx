@@ -11,7 +11,7 @@ const Header = () => {
     <header className="header glass">
       <div className="header-logo">
         <Brain className="logo-icon" size={28} />
-        <h1>MindfulCompanion</h1>
+        <h1>Samridhi</h1>
       </div>
       <nav className="header-nav">
         {isAuthenticated ? (

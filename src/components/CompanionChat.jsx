@@ -5,7 +5,7 @@ import { generateCompanionResponse } from '../services/ai';
 
 const CompanionChat = () => {
   const [messages, setMessages] = useState([
-    { id: 1, sender: 'bot', text: 'Hi there! I am your Mindful Companion. How are you feeling about your studies today?' }
+    { id: 1, sender: 'bot', text: 'Hi there! I am your Samridhi Companion. How are you feeling about your studies today?' }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -43,7 +43,7 @@ const CompanionChat = () => {
       <div className="chat-header">
         <Bot size={24} color="var(--primary)" />
         <div>
-          <h3>Mindful Companion</h3>
+          <h3>Samridhi Companion</h3>
           <p className="status">Online | Always here to listen</p>
         </div>
       </div>
