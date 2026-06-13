@@ -60,8 +60,13 @@ export const generateCompanionResponse = async (history, currentMessage) => {
     const genAI = getGenAI();
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
+    // Gemini requires the first message in history to be from the 'user'
+    // So we find the first user message and slice the array from there
+    const firstUserIndex = history.findIndex(msg => msg.role === 'user');
+    const validHistory = firstUserIndex >= 0 ? history.slice(firstUserIndex) : [];
+
     const chat = model.startChat({
-      history: history.map(msg => ({
+      history: validHistory.map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.content }],
       })),
