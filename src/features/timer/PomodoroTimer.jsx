@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { addFocusSession } from '../../store/slices/wellnessSlice';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFocusSessionToCloud, addFocusSessionLocal } from '../../store/slices/wellnessSlice';
 import { motion } from 'framer-motion';
 import { Play, Pause, Square, Timer } from 'lucide-react';
 import './PomodoroTimer.css';
@@ -9,6 +9,7 @@ const PomodoroTimer = () => {
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     let interval = null;
@@ -17,12 +18,17 @@ const PomodoroTimer = () => {
         setTimeLeft(timeLeft - 1);
       }, 1000);
     } else if (timeLeft === 0 && isActive) {
-      setIsActive(false);
-      dispatch(addFocusSession({ duration: 25, type: 'pomodoro' }));
-      // Optional: Play a sound here
+      setTimeout(() => {
+        setIsActive(false);
+        const sessionData = { duration: 25, type: 'pomodoro' };
+        dispatch(addFocusSessionLocal({ id: Date.now().toString(), date: new Date().toISOString(), durationMinutes: sessionData.duration, type: sessionData.type }));
+        if (user?.uid) {
+          dispatch(addFocusSessionToCloud({ uid: user.uid, durationMinutes: sessionData.duration, type: sessionData.type }));
+        }
+      }, 0);
     }
     return () => clearInterval(interval);
-  }, [isActive, timeLeft, dispatch]);
+  }, [isActive, timeLeft, dispatch, user?.uid]);
 
   const toggleTimer = () => {
     setIsActive(!isActive);
@@ -64,11 +70,11 @@ const PomodoroTimer = () => {
       </div>
 
       <div className="timer-controls">
-        <button className="control-btn play-btn" onClick={toggleTimer}>
-          {isActive ? <Pause size={24} /> : <Play size={24} />}
+        <button className="control-btn play-btn" onClick={toggleTimer} aria-label={isActive ? "Pause Timer" : "Start Timer"}>
+          {isActive ? <Pause size={24} aria-hidden="true" /> : <Play size={24} aria-hidden="true" />}
         </button>
-        <button className="control-btn reset-btn" onClick={resetTimer}>
-          <Square size={20} />
+        <button className="control-btn reset-btn" onClick={resetTimer} aria-label="Reset Timer">
+          <Square size={20} aria-hidden="true" />
         </button>
       </div>
     </div>

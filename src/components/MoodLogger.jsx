@@ -1,6 +1,6 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { addMoodLog } from '../store/slices/wellnessSlice';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addMoodLogToCloud, addMoodLogLocal } from '../store/slices/wellnessSlice';
 import { motion } from 'framer-motion';
 import './MoodLogger.css';
 
@@ -14,11 +14,17 @@ const moods = [
 
 const MoodLogger = () => {
   const dispatch = useDispatch();
-  const [selected, setSelected] = React.useState(null);
+  const user = useSelector((state) => state.auth.user);
+  const [selected, setSelected] = useState(null);
 
   const handleSelect = (mood) => {
     setSelected(mood.value);
-    dispatch(addMoodLog(mood.value));
+    // Optimistic local update
+    // eslint-disable-next-line react-hooks/purity
+    dispatch(addMoodLogLocal({ id: Date.now().toString(), date: new Date().toISOString(), mood: mood.value }));
+    if (user?.uid) {
+      dispatch(addMoodLogToCloud({ uid: user.uid, mood: mood.value }));
+    }
   };
 
   return (
@@ -37,8 +43,10 @@ const MoodLogger = () => {
             onClick={() => handleSelect(m)}
             whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.95 }}
+            aria-pressed={selected === m.value}
+            aria-label={`Log mood as ${m.label}`}
           >
-            <span className="emoji">{m.emoji}</span>
+            <span className="emoji" aria-hidden="true">{m.emoji}</span>
             <span className="label">{m.label}</span>
           </motion.button>
         ))}

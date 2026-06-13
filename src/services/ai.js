@@ -58,24 +58,28 @@ export const analyzeJournalEntry = async (text) => {
 export const generateCompanionResponse = async (history, currentMessage) => {
   try {
     const genAI = getGenAI();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash",
+      systemInstruction: "You are an empathetic, student-focused mental wellness companion called Samridhi. Keep your responses brief, supportive, and highly practical. You are chatting with a student preparing for stressful exams."
+    });
+
+    // The 'history' array passed from the UI includes the current message at the end.
+    // We must exclude it from the history passed to startChat, as sendMessage will append it.
+    const previousHistory = history.slice(0, -1);
 
     // Gemini requires the first message in history to be from the 'user'
-    // So we find the first user message and slice the array from there
-    const firstUserIndex = history.findIndex(msg => msg.role === 'user');
-    const validHistory = firstUserIndex >= 0 ? history.slice(firstUserIndex) : [];
+    const firstUserIndex = previousHistory.findIndex(msg => msg.sender === 'user');
+    const validHistory = firstUserIndex >= 0 ? previousHistory.slice(firstUserIndex) : [];
 
     const chat = model.startChat({
       history: validHistory.map(msg => ({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.content }],
+        role: msg.sender === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.text || '' }],
       })),
-      generationConfig: {
-        maxOutputTokens: 200,
-      },
     });
 
-    const result = await chat.sendMessage(`As an empathetic companion for students, reply to: ${currentMessage}. Keep it brief, supportive, and practical.`);
+    // Send the current message cleanly without repetitive prompt wrappers
+    const result = await chat.sendMessage(currentMessage);
     return result.response.text();
   } catch (error) {
     console.error("AI Companion Error:", error);

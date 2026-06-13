@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { checkLoginStreak } from '../store/slices/wellnessSlice';
 import { motion } from 'framer-motion';
 import MoodLogger from '../components/MoodLogger';
 import InsightCard from '../components/InsightCard';
-import { Calendar, Target, Award, Flame } from 'lucide-react';
+import { Calendar, Target, Flame } from 'lucide-react';
 import './Dashboard.css';
 
 const Dashboard = () => {

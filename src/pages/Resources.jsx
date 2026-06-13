@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import BreathingExercise from '../features/resources/BreathingExercise';
 import PomodoroTimer from '../features/timer/PomodoroTimer';

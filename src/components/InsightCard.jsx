@@ -1,5 +1,4 @@
-import React from 'react';
-import { Activity, AlertCircle, Heart } from 'lucide-react';
+import { Activity, AlertCircle } from 'lucide-react';
 import './InsightCard.css';
 
 const InsightCard = ({ analysis }) => {

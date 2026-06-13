@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addJournal } from '../store/slices/wellnessSlice';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addJournalToCloud, addJournalLocal } from '../store/slices/wellnessSlice';
 import { PenTool, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './JournalInput.css';
@@ -12,6 +12,7 @@ const JournalInput = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [currentAnalysis, setCurrentAnalysis] = useState(null);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
   const handleAnalyze = async () => {
     if (!text.trim()) return;
@@ -20,7 +21,11 @@ const JournalInput = () => {
     try {
       const analysis = await analyzeJournalEntry(text);
       setCurrentAnalysis(analysis);
-      dispatch(addJournal({ text, analysis }));
+      const journalData = { text, analysis };
+      dispatch(addJournalLocal({ id: Date.now().toString(), date: new Date().toISOString(), ...journalData }));
+      if (user?.uid) {
+        dispatch(addJournalToCloud({ uid: user.uid, journalData }));
+      }
       setText('');
     } catch (error) {
       console.error(error);
@@ -42,6 +47,7 @@ const JournalInput = () => {
           <h3>Unload your mind</h3>
         </div>
         <textarea
+          aria-label="Journal Entry Input"
           placeholder="How did your study session go? Any specific topics stressing you out?"
           value={text}
           onChange={(e) => setText(e.target.value)}

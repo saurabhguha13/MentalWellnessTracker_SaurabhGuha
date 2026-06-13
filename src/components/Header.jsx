@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Brain, BookHeart, MessageCircleHeart, LineChart, Leaf, Settings as SettingsIcon } from 'lucide-react';
@@ -16,35 +15,35 @@ const Header = () => {
       <nav className="header-nav">
         {isAuthenticated ? (
           <>
-            <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-              <MessageCircleHeart size={20} />
+            <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="Chat Companion">
+              <MessageCircleHeart size={20} aria-hidden="true" />
               <span>Companion</span>
             </NavLink>
-            <NavLink to="/dashboard" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-              <BookHeart size={20} />
+            <NavLink to="/dashboard" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="View Dashboard">
+              <BookHeart size={20} aria-hidden="true" />
               <span>Dashboard</span>
             </NavLink>
-            <NavLink to="/journal" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-              <BookHeart size={20} />
+            <NavLink to="/journal" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="Write in Journal">
+              <BookHeart size={20} aria-hidden="true" />
               <span>Journal</span>
             </NavLink>
-            <NavLink to="/analytics" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-              <LineChart size={20} />
+            <NavLink to="/analytics" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="View Analytics">
+              <LineChart size={20} aria-hidden="true" />
               <span>Analytics</span>
             </NavLink>
-            <NavLink to="/resources" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-              <Leaf size={20} />
+            <NavLink to="/resources" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="Study Resources">
+              <Leaf size={20} aria-hidden="true" />
               <span>Resources</span>
             </NavLink>
 
-            <NavLink to="/settings" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-              <SettingsIcon size={20} />
+            <NavLink to="/settings" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="Account Settings">
+              <SettingsIcon size={20} aria-hidden="true" />
               <span>Settings</span>
             </NavLink>
           </>
         ) : (
-          <NavLink to="/login" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-            <SettingsIcon size={20} />
+          <NavLink to="/login" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="Login">
+            <SettingsIcon size={20} aria-hidden="true" />
             <span>Login</span>
           </NavLink>
         )}

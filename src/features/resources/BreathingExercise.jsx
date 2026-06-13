@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wind } from 'lucide-react';
 import './BreathingExercise.css';
@@ -10,15 +10,15 @@ const BreathingExercise = () => {
   useEffect(() => {
     let timer;
     if (phase === 'inhale') {
-      setTimeLeft(4);
+      setTimeout(() => setTimeLeft(4), 0);
       timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
       setTimeout(() => setPhase('hold'), 4000);
     } else if (phase === 'hold') {
-      setTimeLeft(7);
+      setTimeout(() => setTimeLeft(7), 0);
       timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
       setTimeout(() => setPhase('exhale'), 7000);
     } else if (phase === 'exhale') {
-      setTimeLeft(8);
+      setTimeout(() => setTimeLeft(8), 0);
       timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
       setTimeout(() => setPhase('inhale'), 8000);
     }

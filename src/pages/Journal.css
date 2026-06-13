@@ -1,17 +1,18 @@
 .journal-page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .history-section {
-  margin-top: 32px;
+  margin-top: 40px;
 }
 
 .history-section h3 {
-  margin-bottom: 16px;
-  font-size: 1.25rem;
+  margin-bottom: 24px;
+  font-size: 1.4rem;
   color: var(--text-main);
+  letter-spacing: -0.01em;
 }
 
 .journal-history-list {
@@ -21,28 +22,66 @@
 }
 
 .history-card {
-  padding: 24px;
+  padding: 32px;
   border-radius: var(--radius-lg);
-  border-left: 4px solid var(--secondary);
+  border-left: 6px solid var(--secondary);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.history-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+}
+
+.history-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .history-date {
   font-size: 0.85rem;
   color: var(--text-muted);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .history-text {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-style: italic;
   color: var(--text-main);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   line-height: 1.6;
+  position: relative;
+  padding-left: 20px;
+}
+
+.history-text::before {
+  content: '"';
+  position: absolute;
+  left: 0;
+  top: -10px;
+  font-size: 3rem;
+  color: var(--secondary-light);
+  opacity: 0.3;
+  font-family: serif;
 }
 
 .history-analysis {
-  border-top: 1px solid var(--border);
-  padding-top: 20px;
+  border-top: 1px solid rgba(229, 231, 235, 0.8);
+  padding-top: 24px;
 }

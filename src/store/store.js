@@ -1,17 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import wellnessReducer from './slices/wellnessSlice';
-import authReducer from './slices/authSlice'; // Planning ahead for Auth
+import authReducer from './slices/authSlice';
+import chatReducer from './slices/chatSlice';
 
 const createNoopStorage = () => {
   return {
-    getItem(_key) {
+    getItem() {
       return Promise.resolve(null);
     },
-    setItem(_key, value) {
+    setItem(key, value) {
       return Promise.resolve(value);
     },
-    removeItem(_key) {
+    removeItem() {
       return Promise.resolve();
     },
   };
@@ -34,11 +35,16 @@ const persistedAuthReducer = persistReducer(
   { key: 'mental-wellness-tracker-auth', storage }, 
   authReducer
 );
+const persistedChatReducer = persistReducer(
+  { key: 'mental-wellness-tracker-chat', storage },
+  chatReducer
+);
 
 export const store = configureStore({
   reducer: {
     wellness: persistedWellnessReducer,
     auth: persistedAuthReducer,
+    chat: persistedChatReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, signupUser, clearError } from '../store/slices/authSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -83,6 +83,7 @@ const Auth = () => {
                 <input 
                   type="text" 
                   name="name"
+                  aria-label="Full Name"
                   placeholder="Full Name" 
                   value={formData.name}
                   onChange={handleChange}
@@ -98,6 +99,7 @@ const Auth = () => {
             <input 
               type="email" 
               name="email"
+              aria-label="Email Address"
               placeholder="Email Address" 
               value={formData.email}
               onChange={handleChange}
@@ -111,6 +113,7 @@ const Auth = () => {
             <input 
               type="password" 
               name="password"
+              aria-label="Password"
               placeholder="Password" 
               value={formData.password}
               onChange={handleChange}
@@ -133,7 +136,13 @@ const Auth = () => {
         <div className="auth-footer">
           <p>
             {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <span className="auth-toggle" onClick={() => !loading && setIsLogin(!isLogin)}>
+            <span 
+              className="auth-toggle" 
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); !loading && setIsLogin(!isLogin); } }}
+              onClick={() => !loading && setIsLogin(!isLogin)}
+            >
               {isLogin ? 'Sign up' : 'Log in'}
             </span>
           </p>

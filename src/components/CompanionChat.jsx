@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addMessage } from '../store/slices/chatSlice';
 import { Send, Bot, User, Loader2 } from 'lucide-react';
 import './CompanionChat.css';
 import { generateCompanionResponse } from '../services/ai';
 
 const CompanionChat = () => {
-  const [messages, setMessages] = useState([
-    { id: 1, sender: 'bot', text: 'Hi there! I am your Samridhi Companion. How are you feeling about your studies today?' }
-  ]);
+  const messages = useSelector((state) => state.chat.messages);
+  const dispatch = useDispatch();
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const endOfMessagesRef = useRef(null);
@@ -24,13 +25,15 @@ const CompanionChat = () => {
     if (!input.trim()) return;
 
     const userMessage = { id: Date.now(), sender: 'user', text: input };
-    setMessages((prev) => [...prev, userMessage]);
+    dispatch(addMessage(userMessage));
     setInput('');
     setIsTyping(true);
 
     try {
-      const response = await generateCompanionResponse(messages, userMessage.text);
-      setMessages((prev) => [...prev, { id: Date.now() + 1, sender: 'bot', text: response }]);
+      // Pass the updated history explicitly since Redux state updates asynchronously
+      const updatedHistory = [...messages, userMessage];
+      const response = await generateCompanionResponse(updatedHistory, userMessage.text);
+      dispatch(addMessage({ id: Date.now() + 1, sender: 'bot', text: response }));
     } catch (error) {
       console.error(error);
     } finally {
@@ -69,16 +72,17 @@ const CompanionChat = () => {
         <div ref={endOfMessagesRef} />
       </div>
 
-      <form className="chat-input-area" onSubmit={handleSend}>
+      <form className="chat-input-area" onSubmit={handleSend} aria-label="Chat input area">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message here..."
           disabled={isTyping}
+          aria-label="Message input field"
         />
-        <button type="submit" className="btn btn-primary send-btn" disabled={!input.trim() || isTyping}>
-          <Send size={18} />
+        <button type="submit" className="btn btn-primary send-btn" disabled={!input.trim() || isTyping} aria-label="Send message">
+          <Send size={18} aria-hidden="true" />
         </button>
       </form>
     </div>
