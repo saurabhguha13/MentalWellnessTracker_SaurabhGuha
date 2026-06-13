@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../store/slices/authSlice';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, signupUser, clearError } from '../store/slices/authSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Mail, Lock, User } from 'lucide-react';
+import { Brain, Mail, Lock, User, AlertCircle, Loader2 } from 'lucide-react';
 import './Auth.css';
 
 const Auth = () => {
@@ -12,8 +12,21 @@ const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
 
   const from = location.state?.from?.pathname || "/";
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, navigate, from]);
+
+  // Clear errors when toggling login/signup
+  useEffect(() => {
+    dispatch(clearError());
+  }, [isLogin, dispatch]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,13 +36,11 @@ const Auth = () => {
     e.preventDefault();
     if (isLogin) {
       if (formData.email && formData.password) {
-        dispatch(login({ name: formData.email.split('@')[0], email: formData.email }));
-        navigate(from, { replace: true });
+        dispatch(loginUser({ email: formData.email, password: formData.password }));
       }
     } else {
       if (formData.name && formData.email && formData.password) {
-        dispatch(login({ name: formData.name, email: formData.email }));
-        navigate(from, { replace: true });
+        dispatch(signupUser({ name: formData.name, email: formData.email, password: formData.password }));
       }
     }
   };
@@ -48,6 +59,17 @@ const Auth = () => {
           <p>{isLogin ? 'Log in to continue your wellness journey.' : 'Start tracking your mental wellness today.'}</p>
         </div>
 
+        {error && (
+          <motion.div 
+            className="auth-error"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <AlertCircle size={16} />
+            <span>{error.replace('Firebase: ', '')}</span>
+          </motion.div>
+        )}
+
         <form className="auth-form" onSubmit={handleSubmit}>
           <AnimatePresence mode="popLayout">
             {!isLogin && (
@@ -65,6 +87,7 @@ const Auth = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required={!isLogin}
+                  disabled={loading}
                 />
               </motion.div>
             )}
@@ -79,6 +102,7 @@ const Auth = () => {
               value={formData.email}
               onChange={handleChange}
               required 
+              disabled={loading}
             />
           </div>
 
@@ -91,6 +115,7 @@ const Auth = () => {
               value={formData.password}
               onChange={handleChange}
               required 
+              disabled={loading}
             />
           </div>
 
@@ -99,15 +124,16 @@ const Auth = () => {
             className="btn btn-primary auth-submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            disabled={loading}
           >
-            {isLogin ? 'Log In' : 'Sign Up'}
+            {loading ? <Loader2 className="spinner" size={20} /> : (isLogin ? 'Log In' : 'Sign Up')}
           </motion.button>
         </form>
 
         <div className="auth-footer">
           <p>
             {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <span className="auth-toggle" onClick={() => setIsLogin(!isLogin)}>
+            <span className="auth-toggle" onClick={() => !loading && setIsLogin(!isLogin)}>
               {isLogin ? 'Sign up' : 'Log in'}
             </span>
           </p>
@@ -118,3 +144,4 @@ const Auth = () => {
 };
 
 export default Auth;
+

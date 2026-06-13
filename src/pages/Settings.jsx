@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setApiKey, logout } from '../store/slices/authSlice';
+import { setApiKey, logoutUser } from '../store/slices/authSlice';
 import { motion } from 'framer-motion';
 import { User, Key, LogOut, CheckCircle } from 'lucide-react';
 import './Settings.css';
@@ -18,7 +18,7 @@ const Settings = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
   };
 
   return (
