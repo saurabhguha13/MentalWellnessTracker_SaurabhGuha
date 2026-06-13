@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { checkLoginStreak } from '../store/slices/wellnessSlice';
 import { motion } from 'framer-motion';
 import MoodLogger from '../components/MoodLogger';
 import InsightCard from '../components/InsightCard';
@@ -12,7 +11,7 @@ const Dashboard = () => {
   const { journals, moodLogs, streaks } = useSelector((state) => state.wellness);
 
   useEffect(() => {
-    dispatch(checkLoginStreak());
+    // Check login streak logic moved to auth flow
   }, [dispatch]);
 
   const totalEntries = journals.length;
