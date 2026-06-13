@@ -46,8 +46,9 @@ const JournalInput = () => {
           <PenTool size={20} color="var(--primary)" />
           <h3>Unload your mind</h3>
         </div>
+        <label htmlFor="journal-textarea" className="sr-only">Journal Entry Input</label>
         <textarea
-          aria-label="Journal Entry Input"
+          id="journal-textarea"
           placeholder="How did your study session go? Any specific topics stressing you out?"
           value={text}
           onChange={(e) => setText(e.target.value)}

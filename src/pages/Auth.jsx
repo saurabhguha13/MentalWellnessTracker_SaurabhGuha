@@ -80,10 +80,11 @@ const Auth = () => {
                 exit={{ opacity: 0, height: 0, marginBottom: 0 }}
               >
                 <User className="input-icon" size={20} />
+                <label htmlFor="name-input" className="sr-only">Full Name</label>
                 <input 
+                  id="name-input"
                   type="text" 
                   name="name"
-                  aria-label="Full Name"
                   placeholder="Full Name" 
                   value={formData.name}
                   onChange={handleChange}
@@ -96,10 +97,11 @@ const Auth = () => {
 
           <div className="input-group">
             <Mail className="input-icon" size={20} />
+            <label htmlFor="email-input" className="sr-only">Email Address</label>
             <input 
+              id="email-input"
               type="email" 
               name="email"
-              aria-label="Email Address"
               placeholder="Email Address" 
               value={formData.email}
               onChange={handleChange}
@@ -110,10 +112,11 @@ const Auth = () => {
 
           <div className="input-group">
             <Lock className="input-icon" size={20} />
+            <label htmlFor="password-input" className="sr-only">Password</label>
             <input 
+              id="password-input"
               type="password" 
               name="password"
-              aria-label="Password"
               placeholder="Password" 
               value={formData.password}
               onChange={handleChange}

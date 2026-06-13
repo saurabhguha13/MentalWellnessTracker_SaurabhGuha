@@ -73,13 +73,14 @@ const CompanionChat = () => {
       </div>
 
       <form className="chat-input-area" onSubmit={handleSend} aria-label="Chat input area">
+        <label htmlFor="chat-input" className="sr-only">Message input field</label>
         <input
+          id="chat-input"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message here..."
           disabled={isTyping}
-          aria-label="Message input field"
         />
         <button type="submit" className="btn btn-primary send-btn" disabled={!input.trim() || isTyping} aria-label="Send message">
           <Send size={18} aria-hidden="true" />
