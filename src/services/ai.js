@@ -12,7 +12,7 @@ const getGenAI = () => {
 export const analyzeJournalEntry = async (text) => {
   try {
     const genAI = getGenAI();
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
       You are an empathetic, student-focused mental wellness companion.
@@ -58,7 +58,7 @@ export const analyzeJournalEntry = async (text) => {
 export const generateCompanionResponse = async (history, currentMessage) => {
   try {
     const genAI = getGenAI();
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const chat = model.startChat({
       history: history.map(msg => ({
