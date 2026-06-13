@@ -17,6 +17,10 @@ const Header = () => {
         {isAuthenticated ? (
           <>
             <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+              <MessageCircleHeart size={20} />
+              <span>Companion</span>
+            </NavLink>
+            <NavLink to="/dashboard" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
               <BookHeart size={20} />
               <span>Dashboard</span>
             </NavLink>
@@ -32,10 +36,7 @@ const Header = () => {
               <Leaf size={20} />
               <span>Resources</span>
             </NavLink>
-            <NavLink to="/companion" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-              <MessageCircleHeart size={20} />
-              <span>Companion</span>
-            </NavLink>
+
             <NavLink to="/settings" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
               <SettingsIcon size={20} />
               <span>Settings</span>

@@ -25,11 +25,12 @@ const AnimatedRoutes = () => {
         <Route path="/signup" element={<Auth />} />
         
         {/* Protected Routes */}
-        <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/" element={<ProtectedRoute><Companion /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/journal" element={<ProtectedRoute><Journal /></ProtectedRoute>} />
         <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
         <Route path="/resources" element={<ProtectedRoute><Resources /></ProtectedRoute>} />
-        <Route path="/companion" element={<ProtectedRoute><Companion /></ProtectedRoute>} />
+
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         
         {/* Fallback */}
