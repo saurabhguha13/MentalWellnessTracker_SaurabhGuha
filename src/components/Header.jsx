@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Brain, BookHeart, MessageCircleHeart } from 'lucide-react';
+import { Brain, BookHeart, MessageCircleHeart, LineChart, Leaf } from 'lucide-react';
 import './Header.css';
 
 const Header = () => {
@@ -18,6 +18,14 @@ const Header = () => {
         <NavLink to="/journal" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
           <BookHeart size={20} />
           <span>Journal</span>
+        </NavLink>
+        <NavLink to="/analytics" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+          <LineChart size={20} />
+          <span>Analytics</span>
+        </NavLink>
+        <NavLink to="/resources" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+          <Leaf size={20} />
+          <span>Resources</span>
         </NavLink>
         <NavLink to="/companion" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
           <MessageCircleHeart size={20} />

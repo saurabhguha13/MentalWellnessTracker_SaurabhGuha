@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { checkLoginStreak } from '../store/slices/wellnessSlice';
+import { motion } from 'framer-motion';
 import MoodLogger from '../components/MoodLogger';
 import InsightCard from '../components/InsightCard';
-import { useWellness } from '../context/WellnessContext';
-import { Calendar, Target, Award } from 'lucide-react';
+import { Calendar, Target, Award, Flame } from 'lucide-react';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { journals, moodLogs } = useWellness();
+  const dispatch = useDispatch();
+  const { journals, moodLogs, streaks } = useSelector((state) => state.wellness);
 
-  // Basic stats
+  useEffect(() => {
+    dispatch(checkLoginStreak());
+  }, [dispatch]);
+
   const totalEntries = journals.length;
   const avgMood = moodLogs.length > 0 
     ? Math.round(moodLogs.reduce((acc, log) => acc + log.mood, 0) / moodLogs.length) 
@@ -17,7 +23,13 @@ const Dashboard = () => {
   const latestAnalysis = journals.length > 0 ? journals[0].analysis : null;
 
   return (
-    <div className="dashboard-page fade-in">
+    <motion.div 
+      className="dashboard-page"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      transition={{ duration: 0.4 }}
+    >
       <header className="page-header">
         <h2>Welcome back!</h2>
         <p>Let's check in on your preparation journey.</p>
@@ -26,27 +38,27 @@ const Dashboard = () => {
       <MoodLogger />
 
       <div className="stats-grid">
-        <div className="stat-card glass">
+        <motion.div className="stat-card glass" whileHover={{ y: -5 }}>
+          <Flame color="var(--primary)" />
+          <div className="stat-info">
+            <span className="stat-value">{streaks.current}</span>
+            <span className="stat-label">Day Streak</span>
+          </div>
+        </motion.div>
+        <motion.div className="stat-card glass" whileHover={{ y: -5 }}>
           <Calendar color="var(--primary)" />
           <div className="stat-info">
             <span className="stat-value">{totalEntries}</span>
             <span className="stat-label">Journal Entries</span>
           </div>
-        </div>
-        <div className="stat-card glass">
+        </motion.div>
+        <motion.div className="stat-card glass" whileHover={{ y: -5 }}>
           <Target color="var(--primary)" />
           <div className="stat-info">
             <span className="stat-value">{avgMood}</span>
             <span className="stat-label">Avg Mood Score</span>
           </div>
-        </div>
-        <div className="stat-card glass">
-          <Award color="var(--primary)" />
-          <div className="stat-info">
-            <span className="stat-value">On Track</span>
-            <span className="stat-label">Study Status</span>
-          </div>
-        </div>
+        </motion.div>
       </div>
 
       {latestAnalysis ? (
@@ -59,8 +71,9 @@ const Dashboard = () => {
           <p>You haven't added any journal entries yet. Unload your thoughts in the Journal tab to get AI insights.</p>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
 export default Dashboard;
+

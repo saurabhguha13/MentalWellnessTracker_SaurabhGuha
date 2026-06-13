@@ -1,14 +1,21 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion';
 import JournalInput from '../components/JournalInput';
 import InsightCard from '../components/InsightCard';
-import { useWellness } from '../context/WellnessContext';
 import './Journal.css';
 
 const Journal = () => {
-  const { journals } = useWellness();
+  const journals = useSelector((state) => state.wellness.journals);
 
   return (
-    <div className="journal-page fade-in">
+    <motion.div 
+      className="journal-page"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      transition={{ duration: 0.4 }}
+    >
       <header className="page-header">
         <h2>Your Journal</h2>
         <p>A safe space to reflect on your preparation and feelings.</p>
@@ -21,7 +28,13 @@ const Journal = () => {
           <h3>Past Entries</h3>
           <div className="journal-history-list">
             {journals.map((journal) => (
-              <div key={journal.id} className="history-card glass">
+              <motion.div 
+                key={journal.id} 
+                className="history-card glass"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
                 <div className="history-date">
                   {new Date(journal.date).toLocaleDateString(undefined, {
                     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
@@ -33,13 +46,14 @@ const Journal = () => {
                     <InsightCard analysis={journal.analysis} />
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
 export default Journal;
+
